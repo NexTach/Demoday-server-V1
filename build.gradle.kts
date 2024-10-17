@@ -2,7 +2,13 @@ plugins {
     java
     id("org.springframework.boot") version "3.3.4"
     id("io.spring.dependency-management") version "1.1.6"
+    id("org.jetbrains.kotlin.plugin.jpa") version "1.8.0"
+    id("org.jetbrains.kotlin.plugin.noarg") version "1.8.0"
     kotlin("jvm")
+}
+
+noArg {
+    annotation("javax.persistence.Entity")
 }
 
 group = "class4"

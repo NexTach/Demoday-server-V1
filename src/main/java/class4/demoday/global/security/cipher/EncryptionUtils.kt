@@ -12,7 +12,7 @@ object EncryptionUtils {
     private fun loadKeyFromEnvironment(): SecretKey {
         val base64Key =
             System.getenv("ENCRYPTION_KEY")
-                ?: throw IllegalArgumentException("ENCRYPTION_KEY 환경 변수가 설정되지 않았습니다.")
+                ?: throw IllegalArgumentException("ENCRYPTION_KEY environment variable is not set")
 
         val decodedKey = Base64.getDecoder().decode(base64Key)
         return SecretKeySpec(decodedKey, ALGORITHM)

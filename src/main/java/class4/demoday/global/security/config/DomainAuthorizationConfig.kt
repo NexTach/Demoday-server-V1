@@ -23,7 +23,8 @@ class DomainAuthorizationConfig {
             ).hasAnyRole("WARD", "PROTECTOR")
             .requestMatchers(
                 "/api/v1/auth/**",
-                "/swagger-ui/**"
+                "/swagger-ui/**",
+                "/v3/api-docs/**"
             ).permitAll()
             .anyRequest().authenticated()
     }

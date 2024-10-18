@@ -35,7 +35,9 @@ class JwtFilter(jwtTokenService: JwtTokenService, jwtAuthenticationService: JwtA
         if (
             requestURI.startsWith("/api/v1/auth/signup") ||
             requestURI.startsWith("/api/v1/auth/signin") ||
-            requestURI.startsWith("/api/v1/auth/reissue")
+            requestURI.startsWith("/api/v1/auth/reissue") ||
+            requestURI.startsWith("/swagger-ui/") ||
+            requestURI.startsWith("/v3/api-docs")
         ) {
             filterChain.doFilter(request, response)
             return

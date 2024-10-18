@@ -1,6 +1,13 @@
 package class4.demoday.global.security.jwt.filter
 
+import class4.demoday.global.exception.ExpiredTokenException
+import class4.demoday.global.exception.InvalidTokenException
+import class4.demoday.global.exception.InvalidTokenFormatException
+import class4.demoday.global.exception.dto.enums.Status
 import class4.demoday.global.exception.dto.response.ErrorResponse
+import class4.demoday.global.security.jwt.service.JwtAuthenticationService
+import class4.demoday.global.security.jwt.service.JwtTokenService
+import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,9 +32,10 @@ class JwtFilter(jwtTokenService: JwtTokenService, jwtAuthenticationService: JwtA
         filterChain: FilterChain
     ) {
         val requestURI = request.requestURI
-        if (requestURI.startsWith("/api/v1/auth/signup") || requestURI.startsWith("/api/v1/auth/signin") || requestURI.startsWith(
-                "/api/v1/auth/reissue"
-            )
+        if (
+            requestURI.startsWith("/api/v1/auth/signup") ||
+            requestURI.startsWith("/api/v1/auth/signin") ||
+            requestURI.startsWith("/api/v1/auth/reissue")
         ) {
             filterChain.doFilter(request, response)
             return
@@ -40,11 +48,11 @@ class JwtFilter(jwtTokenService: JwtTokenService, jwtAuthenticationService: JwtA
             }
             filterChain.doFilter(request, response)
         } catch (e: InvalidTokenFormatException) {
-            setErrorResponse(response, e.getMessage())
+            setErrorResponse(response, "Invalid token format")
         } catch (e: InvalidTokenException) {
-            setErrorResponse(response, e.getMessage())
+            setErrorResponse(response, "Invalid token")
         } catch (e: ExpiredTokenException) {
-            setErrorResponse(response, e.getMessage())
+            setErrorResponse(response, "Expired token")
         }
     }
 
@@ -53,7 +61,7 @@ class JwtFilter(jwtTokenService: JwtTokenService, jwtAuthenticationService: JwtA
         response.status = HttpStatus.UNAUTHORIZED.value()
         response.contentType = "application/json"
         response.characterEncoding = "UTF-8"
-        val errorResponse: ErrorResponse = ErrorResponse(HttpStatus.UNAUTHORIZED, errorMessage)
+        val errorResponse: ErrorResponse = ErrorResponse(403, errorMessage, Status.ERROR)
         val objectMapper = ObjectMapper()
         val responseBody = objectMapper.writeValueAsString(errorResponse)
         response.writer.write(responseBody)

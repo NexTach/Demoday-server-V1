@@ -1,5 +1,6 @@
 package class4.demoday.global.security.jwt.service;
 
+import class4.demoday.domain.auth.dto.response.RefreshResponse;
 import class4.demoday.global.exception.ExpiredRefreshTokenException;
 import class4.demoday.global.exception.ExpiredTokenException;
 import class4.demoday.global.exception.InvalidTokenException;
@@ -129,8 +130,8 @@ public class JwtTokenService {
         return expiration.getTime();
     }
 
-    public TokenResponse reissueToken(String refreshToken) {
-        RefreshToken storedToken = refreshTokenRepository.findById(refreshToken)
+    public RefreshResponse reissueToken(String refreshToken) {
+        RefreshToken storedToken = refreshTokenRepository.findByRefreshToken(refreshToken)
                 .orElseThrow(() -> new InvalidTokenException("Invalid refresh token"));
         if (storedToken.getExpiredAt().isBefore(LocalDateTime.now())) {
             throw new ExpiredRefreshTokenException("Refresh token expired");
@@ -140,11 +141,9 @@ public class JwtTokenService {
             throw new InvalidTokenException("User not found");
         }
         String newAccessToken = generateAccessToken(member.getPhoneNumber(), member.getRole());
-        return new TokenResponse(
+        return new RefreshResponse(
                 newAccessToken,
-                refreshToken,
                 LocalDateTime.now().plusSeconds(ACCESS_TOKEN_TIME),
-                storedToken.getExpiredAt(),
                 member.getRole()
         );
     }

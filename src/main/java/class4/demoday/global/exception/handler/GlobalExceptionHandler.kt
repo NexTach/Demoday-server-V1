@@ -1,5 +1,10 @@
 package class4.demoday.global.exception.handler
 
+import class4.demoday.global.exception.ExpiredRefreshTokenException
+import class4.demoday.global.exception.ExpiredTokenException
+import class4.demoday.global.exception.IdorPasswordNotMatchException
+import class4.demoday.global.exception.InvalidTokenException
+import class4.demoday.global.exception.InvalidTokenFormatException
 import class4.demoday.global.exception.MemberAlreadyExistsException
 import class4.demoday.global.exception.MemberSavedFailException
 import class4.demoday.global.exception.dto.enums.Status
@@ -41,5 +46,55 @@ class GlobalExceptionHandler {
             statusType = Status.ERROR
         )
         return ResponseEntity(errorResponse, HttpStatus.NOT_FOUND)
+    }
+
+    @ExceptionHandler(IdorPasswordNotMatchException::class)
+    fun handleIdandPasswordNotMatchException(ex: IdorPasswordNotMatchException): ResponseEntity<ErrorResponse> {
+        val errorResponse = ErrorResponse(
+            status = HttpStatus.UNAUTHORIZED.value(),
+            message = "Id or Password not match",
+            statusType = Status.ERROR
+        )
+        return ResponseEntity(errorResponse, HttpStatus.UNAUTHORIZED)
+    }
+
+    @ExceptionHandler(InvalidTokenException::class)
+    fun handleInvalidTokenException(ex: InvalidTokenException): ResponseEntity<ErrorResponse> {
+        val errorResponse = ErrorResponse(
+            status = HttpStatus.UNAUTHORIZED.value(),
+            message = "Invalid Token",
+            statusType = Status.ERROR
+        )
+        return ResponseEntity(errorResponse, HttpStatus.UNAUTHORIZED)
+    }
+
+    @ExceptionHandler(InvalidTokenFormatException::class)
+    fun handleInvalidTokenFormatException(ex: InvalidTokenFormatException): ResponseEntity<ErrorResponse> {
+        val errorResponse = ErrorResponse(
+            status = HttpStatus.BAD_REQUEST.value(),
+            message = "Invalid Token Format",
+            statusType = Status.ERROR
+        )
+        return ResponseEntity(errorResponse, HttpStatus.BAD_REQUEST)
+    }
+
+    @ExceptionHandler(ExpiredTokenException::class)
+    fun handleExpiredTokenException(ex: ExpiredTokenException): ResponseEntity<ErrorResponse> {
+        val errorResponse = ErrorResponse(
+            status = HttpStatus.UNAUTHORIZED.value(),
+            message = "Expired Token",
+            statusType = Status.ERROR
+        )
+        return ResponseEntity(errorResponse, HttpStatus.UNAUTHORIZED)
+    }
+
+    @ExceptionHandler(ExpiredRefreshTokenException::class)
+    fun handleExpiredRefreshTokenException(ex: ExpiredRefreshTokenException): ResponseEntity<ErrorResponse> {
+        val errorResponse = ErrorResponse(
+            status = HttpStatus.UNAUTHORIZED.value(),
+            message = "Expired Refresh Token",
+            statusType = Status.ERROR
+        )
+        return ResponseEntity(errorResponse, HttpStatus.UNAUTHORIZED)
     }
 }

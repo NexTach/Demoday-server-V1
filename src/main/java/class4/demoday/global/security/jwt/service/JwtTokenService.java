@@ -7,6 +7,7 @@ import class4.demoday.global.exception.InvalidTokenException;
 import class4.demoday.global.exception.InvalidTokenFormatException;
 import class4.demoday.global.member.entity.Member;
 import class4.demoday.global.member.repository.MemberRepository;
+import class4.demoday.global.redis.RedisUtil;
 import class4.demoday.global.security.jwt.dto.TokenResponse;
 import class4.demoday.global.security.jwt.entity.RefreshToken;
 import class4.demoday.global.security.jwt.repository.RefreshTokenRepository;
@@ -16,7 +17,9 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -24,11 +27,13 @@ import java.io.Serializable;
 import java.security.Key;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.Objects;
 import java.util.UUID;
 
 import static class4.demoday.global.security.jwt.filter.JwtFilter.AUTHORIZATION_HEADER;
 import static class4.demoday.global.security.jwt.filter.JwtFilter.BEARER_PREFIX;
 
+@Slf4j
 @Component
 public class JwtTokenService {
     private static final String AUTHORITIES_KEY = "auth";
@@ -36,13 +41,15 @@ public class JwtTokenService {
     private static final long REFRESH_TOKEN_TIME = 60L * 60 * 24 * 7;
     private final RefreshTokenRepository refreshTokenRepository;
     private final MemberRepository memberRepository;
+    private final RedisUtil redisUtil;
     @Value("${jwt.secret}")
     private String secretKey;
     private Key key;
 
-    public JwtTokenService(RefreshTokenRepository refreshTokenRepository, MemberRepository memberRepository) {
+    public JwtTokenService(RefreshTokenRepository refreshTokenRepository, MemberRepository memberRepository, RedisUtil redisUtil) {
         this.refreshTokenRepository = refreshTokenRepository;
         this.memberRepository = memberRepository;
+        this.redisUtil = redisUtil;
     }
 
     @PostConstruct
@@ -147,10 +154,26 @@ public class JwtTokenService {
                 member.getRole()
         );
     }
+
     public void invalidateRefreshToken(String username) {
         RefreshToken storedToken = refreshTokenRepository.findByUsername(username);
         if (storedToken != null) {
             refreshTokenRepository.delete(storedToken);
         }
+    }
+
+    public void removeToken(String accessToken,String phoneNumber) {
+        Member member = memberRepository.findByPhoneNumber(phoneNumber);
+        if (member == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
+        refreshTokenRepository.deleteById(
+                Objects.requireNonNull(refreshTokenRepository.
+                        findByUsername(member.getPhoneNumber())).getRefreshToken());
+        redisUtil.setBlackList(
+                accessToken,
+                member.getPhoneNumber(),
+                getExpiration(accessToken)
+        );
     }
 }

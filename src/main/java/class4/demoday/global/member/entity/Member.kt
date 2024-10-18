@@ -11,10 +11,11 @@ import jakarta.persistence.Id
 data class Member(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long,
+    val id: Long?,
     @Column(unique = true, nullable = false, length = 200)
     val phoneNumber: String,
     @Column(nullable = false, length = 200)
     val password: String,
     val role: Roles
-)
+) {
+}

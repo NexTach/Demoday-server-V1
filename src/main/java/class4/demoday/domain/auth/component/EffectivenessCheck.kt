@@ -10,7 +10,9 @@ class EffectivenessCheck(
     private val memberRepository: MemberRepository,
 ) {
     fun checkMemberEffective(phoneNumber: String) {
-        memberRepository.findByPhoneNumber(EncryptionUtils.encrypt(phoneNumber)).let {
+        val encryptedPhoneNumber = EncryptionUtils.encrypt(phoneNumber)
+        val member = memberRepository.findByPhoneNumber(encryptedPhoneNumber)
+        if (member != null) {
             throw MemberAlreadyExistsException(phoneNumber)
         }
     }

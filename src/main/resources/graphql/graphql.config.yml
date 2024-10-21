@@ -1,2 +1,3 @@
+name: graphql-java-tools
 schema: schema.graphqls
-documents: '**/*.graphql'
+documents: '**/*.graphqls'

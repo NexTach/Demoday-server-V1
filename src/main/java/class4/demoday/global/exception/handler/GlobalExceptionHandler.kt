@@ -5,8 +5,10 @@ import class4.demoday.global.exception.ExpiredTokenException
 import class4.demoday.global.exception.IdorPasswordNotMatchException
 import class4.demoday.global.exception.InvalidTokenException
 import class4.demoday.global.exception.InvalidTokenFormatException
+import class4.demoday.global.exception.MarkersNotFoundInRangeException
 import class4.demoday.global.exception.MemberAlreadyExistsException
 import class4.demoday.global.exception.MemberSavedFailException
+import class4.demoday.global.exception.NoMarkersFoundException
 import class4.demoday.global.exception.dto.enums.Status
 import class4.demoday.global.exception.dto.response.ErrorResponse
 import org.springframework.http.HttpStatus
@@ -96,5 +98,25 @@ class GlobalExceptionHandler {
             statusType = Status.ERROR
         )
         return ResponseEntity(errorResponse, HttpStatus.UNAUTHORIZED)
+    }
+
+    @ExceptionHandler(NoMarkersFoundException::class)
+    fun handleNoMarkersFoundException(ex: NoMarkersFoundException): ResponseEntity<ErrorResponse> {
+        val errorResponse = ErrorResponse(
+            status = HttpStatus.NOT_FOUND.value(),
+            message = "No markers found",
+            statusType = Status.ERROR
+        )
+        return ResponseEntity(errorResponse, HttpStatus.NOT_FOUND)
+    }
+
+    @ExceptionHandler(MarkersNotFoundInRangeException::class)
+    fun handleMarkersNotFoundInRangeException(ex: MarkersNotFoundInRangeException): ResponseEntity<ErrorResponse> {
+        val errorResponse = ErrorResponse(
+            status = HttpStatus.NOT_FOUND.value(),
+            message = "No markers found in range",
+            statusType = Status.ERROR
+        )
+        return ResponseEntity(errorResponse, HttpStatus.NOT_FOUND)
     }
 }

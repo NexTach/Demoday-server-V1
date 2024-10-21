@@ -9,10 +9,11 @@ spring:
   graphql:
     graphiql:
       enabled: true
+      path: /graphiql
     schema:
       printer:
         enabled: true
-      locations: classpath:/graphql/**/
+      locations: classpath:/graphql/
       file-extensions: .graphqls
     path: /graphql
   datasource:

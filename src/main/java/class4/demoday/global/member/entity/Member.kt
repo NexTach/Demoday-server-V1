@@ -4,7 +4,7 @@ import class4.demoday.global.security.roles.Roles
 import jakarta.persistence.*
 
 @Entity
-data class Member(
+open class Member(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long?,

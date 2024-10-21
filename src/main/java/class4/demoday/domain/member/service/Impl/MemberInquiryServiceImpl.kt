@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
 
 @Service
-class MemberInquiryInquiryServiceImpl(private val memberRepository: MemberRepository) :
+class MemberInquiryServiceImpl(private val memberRepository: MemberRepository) :
     MemberInquiryService {
 
     override fun getMember(id: Long): Member? {

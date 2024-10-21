@@ -27,6 +27,7 @@ class DomainAuthorizationConfig {
                 "/api/v1/auth/refresh",
                 "/swagger-ui/**",
                 "/v3/api-docs/**",
+                "/graphiql"
             ).permitAll()
             .anyRequest().authenticated()
     }

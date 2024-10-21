@@ -5,8 +5,7 @@ import class4.demoday.domain.auth.component.MemberSave;
 import class4.demoday.domain.auth.dto.request.SignUpRequest;
 import class4.demoday.domain.auth.dto.response.SignUpResponse;
 import class4.demoday.domain.auth.service.SignUpService;
-import class4.demoday.global.member.entity.Member;
-import class4.demoday.global.security.cipher.EncryptionUtils;
+import class4.demoday.global.component.PhoneNumberFormatter;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
@@ -17,11 +16,20 @@ public class SignUpServiceImpl implements SignUpService {
 
     private final EffectivenessCheck effectivenessCheck;
     private final MemberSave memberSave;
+    private final PhoneNumberFormatter phoneNumberFormatter;
 
     @NotNull
     @Override
     public SignUpResponse signUp(@NotNull SignUpRequest signUpRequest) {
-        effectivenessCheck.checkMemberEffective(signUpRequest.getPhoneNumber());
-        return memberSave.saveMember(signUpRequest);
+        String formattedPhoneNumber = signUpRequest.getPhoneNumber();
+        if (!phoneNumberFormatter.formatCheck(formattedPhoneNumber)) {
+            formattedPhoneNumber = phoneNumberFormatter.e164Format(formattedPhoneNumber);
+        }
+        effectivenessCheck.checkMemberEffective(formattedPhoneNumber);
+        return memberSave.saveMember(new SignUpRequest(
+                formattedPhoneNumber,
+                signUpRequest.getPassword(),
+                signUpRequest.getRole()
+        ));
     }
 }

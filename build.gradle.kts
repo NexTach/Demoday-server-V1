@@ -33,9 +33,12 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
+    implementation("org.springframework.boot:spring-boot-starter-graphql")
+    testImplementation("org.springframework.graphql:spring-graphql-test")
 
     // Performance monitoring
     implementation("io.micrometer:micrometer-registry-prometheus")
+    testImplementation("org.springframework:spring-webflux")
 
     // Lombok
     compileOnly("org.projectlombok:lombok")

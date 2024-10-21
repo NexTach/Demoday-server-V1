@@ -1,0 +1,10 @@
+type Query {
+    getMemberById(id: ID!): Member
+    getAllMembers: [Member]
+}
+
+type Member {
+    id: ID
+    phoneNumber: String
+    role: String
+}

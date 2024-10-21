@@ -26,4 +26,13 @@ public class SwaggerConfig {
                 .packagesToScan("class4.demoday.domain.auth.controller")
                 .build();
     }
+
+    @Bean
+    public GroupedOpenApi markerApi() {
+        return GroupedOpenApi.builder()
+                .group("Marker")
+                .pathsToMatch("/api/v1/marker/**")
+                .packagesToScan("class4.demoday.domain.marker.controller")
+                .build();
+    }
 }

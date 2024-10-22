@@ -1,7 +1,6 @@
 package class4.demoday.domain.auth.controller;
 
-import class4.demoday.domain.auth.dto.request.SignInRequest;
-import class4.demoday.domain.auth.dto.request.SignUpRequest;
+import class4.demoday.domain.auth.dto.request.SignRequest;
 import class4.demoday.domain.auth.dto.response.RefreshResponse;
 import class4.demoday.domain.auth.dto.response.SignUpResponse;
 import class4.demoday.domain.auth.service.RefreshService;
@@ -29,14 +28,14 @@ public class AuthController {
 
     @Operation(summary = "회원가입", description = "회원가입을 진행합니다.")
     @PostMapping("/signup")
-    public SignUpResponse signUp(@RequestBody SignUpRequest signUpRequest) {
-        return signUpService.signUp(signUpRequest);
+    public SignUpResponse signUp(@RequestBody SignRequest signRequest) {
+        return signUpService.signUp(signRequest);
     }
 
     @Operation(summary = "로그인", description = "로그인을 진행합니다.")
     @PostMapping("/signin")
-    public TokenResponse signIn(@RequestBody SignInRequest signInRequest) {
-        return signInService.signIn(signInRequest);
+    public TokenResponse signIn(@RequestBody SignRequest signRequest) {
+        return signInService.signIn(signRequest);
     }
 
     @Operation(summary = "토큰 갱신", description = "리프레시 토큰을 이용하여 토큰을 갱신합니다.")

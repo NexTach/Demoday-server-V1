@@ -2,7 +2,7 @@ package class4.demoday.domain.auth.service.Impl;
 
 import class4.demoday.domain.auth.component.EffectivenessCheck;
 import class4.demoday.domain.auth.component.MemberSave;
-import class4.demoday.domain.auth.dto.request.SignUpRequest;
+import class4.demoday.domain.auth.dto.request.SignRequest;
 import class4.demoday.domain.auth.dto.response.SignUpResponse;
 import class4.demoday.domain.auth.service.SignUpService;
 import class4.demoday.global.component.PhoneNumberFormatter;
@@ -20,16 +20,15 @@ public class SignUpServiceImpl implements SignUpService {
 
     @NotNull
     @Override
-    public SignUpResponse signUp(@NotNull SignUpRequest signUpRequest) {
-        String formattedPhoneNumber = signUpRequest.getPhoneNumber();
+    public SignUpResponse signUp(@NotNull SignRequest signRequest) {
+        String formattedPhoneNumber = signRequest.getPhoneNumber();
         if (!phoneNumberFormatter.formatCheck(formattedPhoneNumber)) {
             formattedPhoneNumber = phoneNumberFormatter.e164Format(formattedPhoneNumber);
         }
         effectivenessCheck.checkMemberEffective(formattedPhoneNumber);
-        return memberSave.saveMember(new SignUpRequest(
+        return memberSave.saveMember(new SignRequest(
                 formattedPhoneNumber,
-                signUpRequest.getPassword(),
-                signUpRequest.getRole()
+                signRequest.getPassword()
         ));
     }
 }

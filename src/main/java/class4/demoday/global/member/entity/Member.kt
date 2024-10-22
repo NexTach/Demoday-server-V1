@@ -1,6 +1,5 @@
 package class4.demoday.global.member.entity
 
-import class4.demoday.global.security.roles.Roles
 import jakarta.persistence.*
 
 @Entity
@@ -12,7 +11,5 @@ open class Member(
     var phoneNumber: String,
     @Column(nullable = false, length = 200)
     val password: String,
-    @Enumerated(EnumType.STRING)
-    val role: Roles
 ) {
 }

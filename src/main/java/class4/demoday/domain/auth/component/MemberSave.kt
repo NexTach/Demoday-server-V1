@@ -1,6 +1,6 @@
 package class4.demoday.domain.auth.component
 
-import class4.demoday.domain.auth.dto.request.SignUpRequest
+import class4.demoday.domain.auth.dto.request.SignRequest
 import class4.demoday.domain.auth.dto.response.SignUpResponse
 import class4.demoday.global.exception.MemberSavedFailException
 import class4.demoday.global.member.entity.Member
@@ -15,14 +15,13 @@ class MemberSave(
     private val memberRepository: MemberRepository,
     private val bycryptPasswordEncoder: BCryptPasswordEncoder
 ) {
-    fun saveMember(member: SignUpRequest): SignUpResponse {
+    fun saveMember(member: SignRequest): SignUpResponse {
         val newMember = Member(
             null,
             encrypt(member.phoneNumber),
             bycryptPasswordEncoder.encode(member.password),
-            member.role
         )
-        val savedMember=try {
+        val savedMember = try {
             memberRepository.save(newMember)
         } catch (ex: Exception) {
             throw MemberSavedFailException("Failed to save ${Member::class.simpleName}: ${ex.message}")
@@ -30,7 +29,6 @@ class MemberSave(
         return SignUpResponse(
             savedMember.id,
             decrypt(savedMember.phoneNumber),
-            savedMember.role
         )
     }
 }

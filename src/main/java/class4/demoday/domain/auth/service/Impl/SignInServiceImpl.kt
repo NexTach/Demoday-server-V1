@@ -2,7 +2,7 @@ package class4.demoday.domain.auth.service.Impl
 
 import class4.demoday.domain.auth.component.MemberInquiry
 import class4.demoday.domain.auth.component.PasswordMatchCheck
-import class4.demoday.domain.auth.dto.request.SignInRequest
+import class4.demoday.domain.auth.dto.request.SignRequest
 import class4.demoday.domain.auth.service.SignInService
 import class4.demoday.global.component.PhoneNumberFormatter
 import class4.demoday.global.security.cipher.EncryptionUtils
@@ -18,14 +18,14 @@ class SignInServiceImpl(
     private val phoneNumberFormatter: PhoneNumberFormatter
 ) : SignInService {
 
-    override fun signIn(signInRequest: SignInRequest): TokenResponse {
-        var formattedPhoneNumber = signInRequest.phoneNumber
+    override fun signIn(signRequest: SignRequest): TokenResponse {
+        var formattedPhoneNumber = signRequest.phoneNumber
         if (!phoneNumberFormatter.formatCheck(formattedPhoneNumber)) {
             formattedPhoneNumber = phoneNumberFormatter.e164Format(formattedPhoneNumber)
         }
         jwtTokenService.invalidateRefreshToken(EncryptionUtils.encrypt(formattedPhoneNumber))
         val member = memberInquiry.findMemberByPhoneNumber(formattedPhoneNumber)
-        passwordMatchCheck.checkPasswordMatch(signInRequest, member)
-        return jwtTokenService.generateTokenDto(member.phoneNumber, member.role)
+        passwordMatchCheck.checkPasswordMatch(signRequest, member)
+        return jwtTokenService.generateTokenDto(member.phoneNumber)
     }
 }

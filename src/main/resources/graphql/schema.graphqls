@@ -10,5 +10,4 @@ type Mutation {
 type Member {
     id: ID
     phoneNumber: String
-    role: String
 }

@@ -17,7 +17,7 @@ public class MemberDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(member.getRole().name());
+        SimpleGrantedAuthority authority = new SimpleGrantedAuthority("Non-role");
         Collection<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(authority);
         return authorities;

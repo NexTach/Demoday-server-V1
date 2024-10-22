@@ -11,7 +11,6 @@ import class4.demoday.global.redis.RedisUtil;
 import class4.demoday.global.security.jwt.dto.TokenResponse;
 import class4.demoday.global.security.jwt.entity.RefreshToken;
 import class4.demoday.global.security.jwt.repository.RefreshTokenRepository;
-import class4.demoday.global.security.roles.Roles;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -62,8 +61,8 @@ public class JwtTokenService {
         return key;
     }
 
-    public TokenResponse generateTokenDto(String username, Roles roles) {
-        String accessToken = generateAccessToken(username, roles);
+    public TokenResponse generateTokenDto(String username) {
+        String accessToken = generateAccessToken(username);
         String refreshToken = generateRefreshToken(username);
         RefreshToken refreshTokenEntity = new RefreshToken(
                 UUID.randomUUID().toString(),
@@ -76,16 +75,15 @@ public class JwtTokenService {
                 accessToken,
                 refreshToken,
                 LocalDateTime.now().plusSeconds(ACCESS_TOKEN_TIME),
-                LocalDateTime.now().plusSeconds(REFRESH_TOKEN_TIME),
-                roles
+                LocalDateTime.now().plusSeconds(REFRESH_TOKEN_TIME)
         );
     }
 
-    private String generateAccessToken(String subject, Roles roles) {
+    private String generateAccessToken(String subject) {
         Date expiration = new Date(System.currentTimeMillis() + ACCESS_TOKEN_TIME * 1000);
         return Jwts.builder().
                 setSubject(subject).
-                claim(AUTHORITIES_KEY, roles).
+                claim(AUTHORITIES_KEY, "Non-role").
                 setIssuedAt(new Date()).
                 setExpiration(expiration).
                 signWith(key, SignatureAlgorithm.HS256).
@@ -147,11 +145,10 @@ public class JwtTokenService {
         if (member == null) {
             throw new InvalidTokenException("User not found");
         }
-        String newAccessToken = generateAccessToken(member.getPhoneNumber(), member.getRole());
+        String newAccessToken = generateAccessToken(member.getPhoneNumber());
         return new RefreshResponse(
                 newAccessToken,
-                LocalDateTime.now().plusSeconds(ACCESS_TOKEN_TIME),
-                member.getRole()
+                LocalDateTime.now().plusSeconds(ACCESS_TOKEN_TIME)
         );
     }
 
@@ -162,7 +159,7 @@ public class JwtTokenService {
         }
     }
 
-    public void removeToken(String accessToken,String phoneNumber) {
+    public void removeToken(String accessToken, String phoneNumber) {
         Member member = memberRepository.findByPhoneNumber(phoneNumber);
         if (member == null) {
             throw new UsernameNotFoundException("User not found");

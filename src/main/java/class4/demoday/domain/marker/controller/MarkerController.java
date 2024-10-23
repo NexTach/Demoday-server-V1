@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/marker")
@@ -42,9 +43,31 @@ public class MarkerController {
         return markerService.getMapMarkersByType(type);
     }
 
+    @GetMapping("/{type}/coordinates")
+    @Operation(summary = "타입별 좌표 범위 내 지도 마커 조회", description = "타입별 좌표 범위 내 지도 마커를 조회합니다.")
+    public List<Marker> getMapMarkersByTypeAndCoordinates(
+            @PathVariable MarkerTypes type,
+            @RequestBody GetMapMarkersByCoordinatesRequest request
+    ) {
+        return markerService.getMapMarkersByTypeAndCoordinates(
+                type,
+                request.getXMin(),
+                request.getXMax(),
+                request.getYMin(),
+                request.getYMax()
+        );
+    }
+
     @GetMapping("/{id}")
     @Operation(summary = "ID로 지도 마커 조회", description = "ID로 지도 마커를 조회합니다.")
     public Marker getMapMarkerById(@PathVariable Long id) {
         return markerService.getMapMarkerById(id);
+    }
+
+    @GetMapping("/address")
+    @Operation(summary = "주소로 지도 마커 조회", description = "주소로 지도 마커를 조회합니다.")
+    public List<Marker> getMapMarkersByAddress(@RequestBody Map<String, String> request) {
+        String address = request.get("address");
+        return markerService.getMapMarkersByAddress(address);
     }
 }

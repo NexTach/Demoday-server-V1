@@ -10,4 +10,6 @@ public interface MarkerService {
     List<Marker> getMapMarkersByCoordinates(double xMin, double xMax, double yMin, double yMax);
     List<Marker> getMapMarkersByType(MarkerTypes type);
     Marker getMapMarkerById(Long id);
+    List<Marker> getMapMarkersByAddress(String address);
+    List<Marker> getMapMarkersByTypeAndCoordinates(MarkerTypes type, double xMin, double xMax, double yMin, double yMax);
 }

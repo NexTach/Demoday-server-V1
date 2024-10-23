@@ -15,5 +15,7 @@ open class Marker(
     var y: Double,
     @Column(name = "marker_type")
     @Enumerated(EnumType.STRING)
-    var markerType: MarkerTypes
+    var markerType: MarkerTypes,
+    @Column(name = "address")
+    var address: String,
 )

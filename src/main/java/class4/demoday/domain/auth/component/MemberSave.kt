@@ -18,7 +18,7 @@ class MemberSave(
     fun saveMember(member: SignRequest): SignUpResponse {
         val newMember = Member(
             null,
-            encrypt(member.phoneNumber),
+            encrypt(member.email),
             bycryptPasswordEncoder.encode(member.password),
         )
         val savedMember = try {
@@ -28,7 +28,7 @@ class MemberSave(
         }
         return SignUpResponse(
             savedMember.id,
-            decrypt(savedMember.phoneNumber),
+            decrypt(savedMember.email),
         )
     }
 }

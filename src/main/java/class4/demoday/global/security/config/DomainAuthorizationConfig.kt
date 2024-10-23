@@ -29,6 +29,6 @@ class DomainAuthorizationConfig {
                 "/v3/api-docs/**",
                 "/graphiql"
             ).permitAll()
-            .anyRequest().authenticated()
+            .anyRequest().permitAll()
     }
 }

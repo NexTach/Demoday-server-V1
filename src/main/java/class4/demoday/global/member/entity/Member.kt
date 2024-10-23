@@ -7,8 +7,8 @@ open class Member(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long?,
-    @Column(unique = true, nullable = false, length = 200, name = "phone_number")
-    var phoneNumber: String,
+    @Column(unique = true, nullable = false, length = 200, name = "email")
+    var email: String,
     @Column(nullable = false, length = 200)
     val password: String,
 ) {

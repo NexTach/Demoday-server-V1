@@ -16,7 +16,7 @@ class MemberInquiryServiceImpl(private val memberRepository: MemberRepository) :
         if (member == null) {
             throw UsernameNotFoundException("No member found")
         }
-        member.phoneNumber = EncryptionUtils.decrypt(member.phoneNumber)
+        member.email = EncryptionUtils.decrypt(member.email)
         return member
     }
 
@@ -25,7 +25,7 @@ class MemberInquiryServiceImpl(private val memberRepository: MemberRepository) :
         if (members.isEmpty()) {
             throw UsernameNotFoundException("No members found")
         }
-        members.forEach { it.phoneNumber = EncryptionUtils.decrypt(it.phoneNumber) }
+        members.forEach { it.email = EncryptionUtils.decrypt(it.email) }
         return members
     }
 }

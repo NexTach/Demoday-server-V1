@@ -9,11 +9,11 @@ import org.springframework.stereotype.Component
 class EffectivenessCheck(
     private val memberRepository: MemberRepository,
 ) {
-    fun checkMemberEffective(phoneNumber: String) {
-        val encryptedPhoneNumber = EncryptionUtils.encrypt(phoneNumber)
-        val member = memberRepository.findByPhoneNumber(encryptedPhoneNumber)
+    fun checkMemberEffective(email: String) {
+        val encryptedPhoneNumber = EncryptionUtils.encrypt(email)
+        val member = memberRepository.findByEmail(encryptedPhoneNumber)
         if (member != null) {
-            throw MemberAlreadyExistsException(phoneNumber)
+            throw MemberAlreadyExistsException(email)
         }
     }
 }

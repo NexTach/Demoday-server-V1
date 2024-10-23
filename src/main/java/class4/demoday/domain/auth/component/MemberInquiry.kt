@@ -9,5 +9,5 @@ import org.springframework.stereotype.Component
 class MemberInquiry(
     private val memberRepository: MemberRepository
 ) {
-   fun findMemberByPhoneNumber(phoneNumber: String) = memberRepository.findByPhoneNumber(EncryptionUtils.encrypt(phoneNumber))?: throw UsernameNotFoundException("User not found")
+   fun findMemberByEmail(phoneNumber: String) = memberRepository.findByEmail(EncryptionUtils.encrypt(phoneNumber))?: throw UsernameNotFoundException("User not found")
 }

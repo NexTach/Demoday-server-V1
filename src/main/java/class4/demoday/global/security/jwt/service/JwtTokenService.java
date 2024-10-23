@@ -141,11 +141,11 @@ public class JwtTokenService {
         if (storedToken.getExpiredAt().isBefore(LocalDateTime.now())) {
             throw new ExpiredRefreshTokenException("Refresh token expired");
         }
-        Member member = memberRepository.findByPhoneNumber(storedToken.getUsername());
+        Member member = memberRepository.findByEmail(storedToken.getUsername());
         if (member == null) {
             throw new InvalidTokenException("User not found");
         }
-        String newAccessToken = generateAccessToken(member.getPhoneNumber());
+        String newAccessToken = generateAccessToken(member.getEmail());
         return new RefreshResponse(
                 newAccessToken,
                 LocalDateTime.now().plusSeconds(ACCESS_TOKEN_TIME)
@@ -160,16 +160,16 @@ public class JwtTokenService {
     }
 
     public void removeToken(String accessToken, String phoneNumber) {
-        Member member = memberRepository.findByPhoneNumber(phoneNumber);
+        Member member = memberRepository.findByEmail(phoneNumber);
         if (member == null) {
             throw new UsernameNotFoundException("User not found");
         }
         refreshTokenRepository.deleteById(
                 Objects.requireNonNull(refreshTokenRepository.
-                        findByUsername(member.getPhoneNumber())).getRefreshToken());
+                        findByUsername(member.getEmail())).getRefreshToken());
         redisUtil.setBlackList(
                 accessToken,
-                member.getPhoneNumber(),
+                member.getEmail(),
                 getExpiration(accessToken)
         );
     }

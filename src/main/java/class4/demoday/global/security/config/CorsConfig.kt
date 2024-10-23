@@ -15,9 +15,9 @@ class CorsConfig {
         val config = CorsConfiguration()
 
         config.allowCredentials = true
-        config.allowedOrigins = listOf("*")
+        config.allowedOrigins = listOf("http://localhost:8080", "https://port-0-demoday-server-v1-lzsaeexf05f2c47e.sel4.cloudtype.app")
         config.allowedMethods = listOf("GET", "POST", "PUT", "DELETE")
-        config.allowedHeaders = listOf("*")
+        config.allowedHeaders = listOf("Authorization", "Cache-Control", "Content-Type", "Refreshtoken")
 
         source.registerCorsConfiguration("/**", config)
         return CorsFilter(source)
@@ -26,7 +26,7 @@ class CorsConfig {
     fun configureCors(): UrlBasedCorsConfigurationSource {
         val config = CorsConfiguration().apply {
             allowCredentials = true
-            allowedOrigins = listOf("*")
+            allowedOrigins = listOf("http://localhost:8080", "https://port-0-demoday-server-v1-lzsaeexf05f2c47e.sel4.cloudtype.app")
             allowedMethods = listOf("GET", "POST", "PUT", "DELETE", "OPTIONS")
             allowedHeaders = listOf("Authorization", "Cache-Control", "Content-Type", "Refreshtoken")
         }

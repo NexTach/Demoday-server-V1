@@ -8,7 +8,8 @@ import jakarta.persistence.*
 open class Recode(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "recode_id")
     val id: Long?,
-    @ManyToOne(cascade = [CascadeType.ALL]) @JoinColumn(name = "user_id")
+    @ManyToOne(cascade = [CascadeType.PERSIST, CascadeType.MERGE])
+    @JoinColumn(name = "user_id")
     val userId: Member,
     @Column(name = "value", nullable = false)
     var value: Int = 0,

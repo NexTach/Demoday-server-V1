@@ -3,11 +3,8 @@ type Query {
     getAllMembers: [Member]
 }
 
-type Mutation {
-    updateMember(id: ID!, phoneNumber: String, password: String, role: String): Member
-}
-
 type Member {
     id: ID
-    phoneNumber: String
+    email: String
+    name: String
 }

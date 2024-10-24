@@ -3,12 +3,16 @@ package class4.demoday.global.exception.handler
 import class4.demoday.global.exception.ExpiredRefreshTokenException
 import class4.demoday.global.exception.ExpiredTokenException
 import class4.demoday.global.exception.IdorPasswordNotMatchException
+import class4.demoday.global.exception.IndividualMarkerListEmptyException
 import class4.demoday.global.exception.InvalidTokenException
 import class4.demoday.global.exception.InvalidTokenFormatException
+import class4.demoday.global.exception.JsonFormatException
 import class4.demoday.global.exception.MarkersNotFoundInRangeException
 import class4.demoday.global.exception.MemberAlreadyExistsException
 import class4.demoday.global.exception.MemberSavedFailException
 import class4.demoday.global.exception.NoMarkersFoundException
+import class4.demoday.global.exception.RecodeListSizeException
+import class4.demoday.global.exception.UnauthorizedMarkerAccessException
 import class4.demoday.global.exception.dto.enums.Status
 import class4.demoday.global.exception.dto.response.ErrorResponse
 import org.springframework.http.HttpStatus
@@ -115,6 +119,56 @@ class GlobalExceptionHandler {
         val errorResponse = ErrorResponse(
             status = HttpStatus.NOT_FOUND.value(),
             message = "No markers found in range",
+            statusType = Status.ERROR
+        )
+        return ResponseEntity(errorResponse, HttpStatus.NOT_FOUND)
+    }
+
+    @ExceptionHandler(RecodeListSizeException::class)
+    fun handleRecodeListSizeException(ex: RecodeListSizeException): ResponseEntity<ErrorResponse> {
+        val errorResponse = ErrorResponse(
+            status = HttpStatus.INTERNAL_SERVER_ERROR.value(),
+            message = "Recode list size is not 2",
+            statusType = Status.ERROR
+        )
+        return ResponseEntity(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR)
+    }
+
+    @ExceptionHandler(IndividualMarkerListEmptyException::class)
+    fun handleIndividualMarkerListEmptyException(ex: IndividualMarkerListEmptyException): ResponseEntity<ErrorResponse> {
+        val errorResponse = ErrorResponse(
+            status = HttpStatus.NOT_FOUND.value(),
+            message = "IndividualMarker list is empty",
+            statusType = Status.ERROR
+        )
+        return ResponseEntity(errorResponse, HttpStatus.NOT_FOUND)
+    }
+
+    @ExceptionHandler(JsonFormatException::class)
+    fun handleJsonFormatException(ex: JsonFormatException): ResponseEntity<ErrorResponse> {
+        val errorResponse = ErrorResponse(
+            status = HttpStatus.BAD_REQUEST.value(),
+            message = "Json format is invalid",
+            statusType = Status.ERROR
+        )
+        return ResponseEntity(errorResponse, HttpStatus.BAD_REQUEST)
+    }
+
+    @ExceptionHandler(UnauthorizedMarkerAccessException::class)
+    fun handleUnauthorizedMarkerAccessException(ex: UnauthorizedMarkerAccessException): ResponseEntity<ErrorResponse> {
+        val errorResponse = ErrorResponse(
+            status = HttpStatus.UNAUTHORIZED.value(),
+            message = "Unauthorized marker access",
+            statusType = Status.ERROR
+        )
+        return ResponseEntity(errorResponse, HttpStatus.UNAUTHORIZED)
+    }
+
+    @ExceptionHandler(NoSuchElementException::class)
+    fun handleNoSuchElementException(ex: NoSuchElementException): ResponseEntity<ErrorResponse> {
+        val errorResponse = ErrorResponse(
+            status = HttpStatus.NOT_FOUND.value(),
+            message = "No such element",
             statusType = Status.ERROR
         )
         return ResponseEntity(errorResponse, HttpStatus.NOT_FOUND)

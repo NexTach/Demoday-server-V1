@@ -35,4 +35,22 @@ public class SwaggerConfig {
                 .packagesToScan("class4.demoday.domain.marker.controller")
                 .build();
     }
+
+    @Bean
+    public GroupedOpenApi individualMarkerApi() {
+        return GroupedOpenApi.builder()
+                .group("IndividualMarker")
+                .pathsToMatch("/api/v1/individual-marker/**")
+                .packagesToScan("class4.demoday.domain.individualmarker.controller")
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi recodeApi() {
+        return GroupedOpenApi.builder()
+                .group("Recode")
+                .pathsToMatch("/api/v1/recode/**")
+                .packagesToScan("class4.demoday.domain.recode.controller")
+                .build();
+    }
 }

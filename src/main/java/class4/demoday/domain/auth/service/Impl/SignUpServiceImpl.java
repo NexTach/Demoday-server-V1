@@ -22,6 +22,7 @@ public class SignUpServiceImpl implements SignUpService {
         effectivenessCheck.checkMemberEffective(signRequest.getEmail());
         return memberSave.saveMember(
                 new SignRequest(
+                        signRequest.getName(),
                         signRequest.getEmail(),
                         signRequest.getPassword()
                 )

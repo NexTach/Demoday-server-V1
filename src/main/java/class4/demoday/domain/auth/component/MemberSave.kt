@@ -22,8 +22,9 @@ class MemberSave(
     fun saveMember(member: SignRequest): SignUpResponse {
         val newMember = Member(
             null,
-            encrypt(member.email),
-            bycryptPasswordEncoder.encode(member.password),
+            name = member.name,
+            email = encrypt(member.email),
+            password = bycryptPasswordEncoder.encode(member.password)
         )
         val savedMember = try {
             memberRepository.save(newMember)

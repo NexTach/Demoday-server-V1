@@ -20,9 +20,11 @@ public class SignUpServiceImpl implements SignUpService {
     @Override
     public SignUpResponse signUp(@NotNull SignRequest signRequest) {
         effectivenessCheck.checkMemberEffective(signRequest.getEmail());
-        return memberSave.saveMember(new SignRequest(
-                signRequest.getEmail(),
-                signRequest.getPassword()
-        ));
+        return memberSave.saveMember(
+                new SignRequest(
+                        signRequest.getEmail(),
+                        signRequest.getPassword()
+                )
+        );
     }
 }

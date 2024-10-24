@@ -47,7 +47,7 @@ public class MarkerController {
     @Operation(summary = "타입별 좌표 범위 내 지도 마커 조회", description = "타입별 좌표 범위 내 지도 마커를 조회합니다.")
     public List<Marker> getMapMarkersByTypeAndCoordinates(
             @PathVariable MarkerTypes type,
-            @RequestBody GetMapMarkersByCoordinatesRequest request
+            @RequestParam GetMapMarkersByCoordinatesRequest request
     ) {
         return markerService.getMapMarkersByTypeAndCoordinates(
                 type,

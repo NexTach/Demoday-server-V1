@@ -1,6 +1,8 @@
 # Demoday-server-V1
 
-<img src="https://github.com/NexTach/Demoday-server-V1/tree/main/image/Group 35.svg">
+
+<img src="https://github.com/NexTach/Demoday-server-V1/blob/main/image/Group%2035.svg" alt="애플리케이션 로고">
+
 
 ## 1. 프로젝트 소개
 - **팀명**: 4반 아이들
